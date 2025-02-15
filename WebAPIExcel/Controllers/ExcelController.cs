@@ -46,12 +46,15 @@ namespace WebAPIExcel.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutExcelItem(long id, ExcelItem excelItem)
         {
-            if (id != excelItem.Id)
+            // Verificar que el item exista
+            var existingExcelItem = await _context.ExcelItems.FindAsync(id);
+            if (existingExcelItem == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            _context.Entry(excelItem).State = EntityState.Modified;
+            // Modificacion del campo de excel
+            existingExcelItem.Update(excelItem.Name);
 
             try
             {
@@ -81,7 +84,7 @@ namespace WebAPIExcel.Controllers
             await _context.SaveChangesAsync();
 
             // return CreatedAtAction("GetExcelItem", new { id = excelItem.Id }, excelItem);
-            return CreatedAtAction(nameof(GetExcelItem), new { id = excelItem.Id }, excelItem);
+            return CreatedAtAction("GetExcelItem", new { id = excelItem.Id }, excelItem);
         }
 
         // DELETE: api/Excel/5
