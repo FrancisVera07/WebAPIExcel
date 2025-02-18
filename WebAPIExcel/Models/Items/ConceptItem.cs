@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
-namespace WebAPIExcel.Models;
+namespace WebAPIExcel.Models.Items;
 
 public class ConceptItem
 {
-    public long Id { get; private set; }
+    public long Id { get; set; }
     [Required]
     public String? Key { get; set; }
     [Required]
@@ -17,12 +18,16 @@ public class ConceptItem
     public float? Amount { get; set; }
     
     // Relación con GroupParentItem y UnitItem
+    [Required]
     public long? GroupParentID { get; set; }
+    [Required]
     public long? UnitID { get; set; }
     
+    [JsonIgnore]
     public GroupParentItem? GroupParentItem { get; set; }
+    [JsonIgnore]
     public UnitItem? UnitItem { get; set; }
     
-    public DateTime? CreateTimestamp { get; private set; } = DateTime.Now;
-    public DateTime? UpdateTimestamp { get; private set; } = DateTime.Now;
+    public DateTime? CreateTimestamp { get; set; } = DateTime.Now;
+    public DateTime? UpdateTimestamp { get; set; } = DateTime.Now;
 }
