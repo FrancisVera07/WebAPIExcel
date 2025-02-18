@@ -1,19 +1,32 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
-namespace WebAPIExcel.Models;
+namespace WebAPIExcel.Models.Items;
 
 public class GroupItem
 {
-    public long Id { get; private set; }
+    public long Id { get; set; }
+
     [Required]
-    public String? Key { get; set; }
+    public string Key { get; set; }
+
     [Required]
-    public String? Concept { get; set; }
-    
+    public string Concept { get; set; }
+
     // Relación con ExcelItem
-    public long? ExcelFileID { get; set; }
+    [Required]
+    public long ExcelFileID { get; set; }
+
+    [JsonIgnore]
     public ExcelItem? ExcelFile { get; set; }
-    
-    public DateTime? CreateTimestamp { get; private set; } = DateTime.Now;
-    public DateTime? UpdateTimestamp { get; private set; } = DateTime.Now;
+
+    // Relación GroupParentItems con GroupItems
+    [JsonIgnore]
+    public ICollection<GroupParentItem> ParentGroupItems { get; set; } = new List<GroupParentItem>();
+    [JsonIgnore]
+    public ICollection<GroupParentItem> ChildGroupItems { get; set; } = new List<GroupParentItem>();
+
+    public DateTime? CreateTimestamp { get; set; } = DateTime.Now;
+    public DateTime? UpdateTimestamp { get; set; } = DateTime.Now;
 }

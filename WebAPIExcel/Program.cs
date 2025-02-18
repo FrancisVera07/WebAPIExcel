@@ -1,13 +1,16 @@
 using Microsoft.EntityFrameworkCore;
-using WebAPIExcel.Models;
+using WebAPIExcel.Models.Contexts;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddDbContext<ExcelContext>(opt =>
-    opt.UseInMemoryDatabase("ExcelList"));
+
+// Almacenamiento en memoria
+builder.Services.AddDbContext<AppDbContext>(opt =>
+    opt.UseInMemoryDatabase("ContextList"));
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
